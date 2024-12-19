@@ -29,14 +29,14 @@ async def get_product(
     return product
 
 @product_router.get("/category/{category}", response_model=List[ProductResponseDTO])
-async def get_product_by_category(
+async def get_products_by_category(
     category: ProductCategory,
     product_service: ProductService = Depends(get_product_service)
 ) -> List[ProductResponseDTO]:
     products = await product_service.get_products_by_category(category)
     if not products:
         raise HTTPException(status_code=404, detail="Products by this category not found")
-    return products
+    return [ProductResponseDTO.model_validate(product) for product in products]
 
 @product_router.post("/", response_model=ProductResponseDTO)
 async def create_product(
@@ -44,8 +44,7 @@ async def create_product(
     current_user: dict = Depends(get_current_user),
     product_service: ProductService = Depends(get_product_service)
 ) -> ProductResponseDTO:
-    product_data.user_id = current_user["id"]
-    return await product_service.create_product(product_data)
+    return await product_service.create_product(product_data, user_id=current_user["id"])
 
 @product_router.put("/{product_id}", response_model=ProductResponseDTO)
 async def update_product(

@@ -17,9 +17,9 @@ class ProductRepository:
         result = await self.db.execute(select(Product).filter(Product.id == product_id))
         return result.scalar_one_or_none()
     
-    async def get_product_by_category(self, category: ProductCategory) -> List[Product]:
+    async def get_products_by_category(self, category: ProductCategory) -> List[Product]:
         result = await self.db.execute(select(Product).filter(Product.category == category))
-        return result.scalar_one_or_none()
+        return result.scalars().all()  
 
     async def create_product(self, product_data: dict) -> Product:
         try:

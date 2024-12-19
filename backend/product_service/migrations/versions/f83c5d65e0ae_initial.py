@@ -30,7 +30,7 @@ def upgrade() -> None:
         sa.Column('name', sa.String, nullable=False, index=True),
         sa.Column('description', sa.Text, nullable=True),
         sa.Column('price', sa.Float, nullable=False),
-        sa.Column('stock_quantity', sa.Integer, nullable=False, default=1),
+        sa.Column('stock_quantity', sa.Integer, nullable=False, default=0),
         sa.Column('category', product_category_enum, nullable=False),
     )
 

@@ -17,5 +17,5 @@ class Product(Base):
     name = Column(String, nullable=False, index=True)
     description = Column(Text, nullable=True)
     price = Column(Float, nullable=False)
-    stock_quantity = Column(Integer, nullable=False, default=1)
+    stock_quantity = Column(Integer, nullable=False, default=0)
     category = Column(SQLAlchemyEnum(ProductCategory), nullable=False)

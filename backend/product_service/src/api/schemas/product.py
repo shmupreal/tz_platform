@@ -12,7 +12,7 @@ class ProductBase(BaseResponse):
     category: ProductCategory
 
 class ProductCreateDTO(ProductBase):
-    user_id: int
+    ...
 
 class ProductUpdateDTO(BaseResponse):
     name: Optional[str]
