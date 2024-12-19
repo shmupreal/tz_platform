@@ -1,0 +1,12 @@
+venv
+node_modules
+__pycache__/
+.pytest_cache
+*.pytest_cache
+*.pyc
+.vscode/
+.idea/
+*.iml
+*.log
+assets/*  
+!assets/  
