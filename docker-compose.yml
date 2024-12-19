@@ -136,6 +136,15 @@ services:
       timeout: 5s
       retries: 5
 
+  redis:
+    image: redis:7
+    container_name: redis_app
+    command: --port 6379
+    expose:
+      - 6379
+    networks:
+      - app_network
+
 networks:
   app_network:
     driver: bridge

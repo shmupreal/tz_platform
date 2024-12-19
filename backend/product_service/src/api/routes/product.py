@@ -1,10 +1,10 @@
 from ...enums.product_category import ProductCategory
-from ...models.product import Product
-from typing import List, Optional
+from typing import List
 from ...api.deps.product_deps import get_product_service, get_current_user
 from ...api.schemas.product import ProductResponseDTO, ProductUpdateDTO, ProductCreateDTO
 from fastapi import APIRouter, Depends, HTTPException
 from ...services.product_service import ProductService
+from fastapi_cache.decorator import cache
 
 product_router = APIRouter(
     prefix="/product",
@@ -12,6 +12,7 @@ product_router = APIRouter(
 )
 
 @product_router.get("/", response_model=List[ProductResponseDTO])
+@cache(expire=180)
 async def get_all_products(
     product_service: ProductService = Depends(get_product_service)
 ) -> List[ProductResponseDTO]:
