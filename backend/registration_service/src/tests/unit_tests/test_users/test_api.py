@@ -1,16 +1,6 @@
 import pytest
 import json
 import pytest
-from pytest_httpx import HTTPXMock
-
-@pytest.fixture
-def mock_auth_service(httpx_mock: HTTPXMock):
-    httpx_mock.add_response(
-        method="POST",  
-        url="http://auth_service:8000/users", 
-        status_code=201, 
-        json={"id": 1, "name": "Jane Smith"}  
-    )
 
 @pytest.mark.asyncio
 async def test_register_user(mock_auth_service, ac):

@@ -9,6 +9,7 @@ from datetime import datetime
 from httpx._transports.asgi import ASGITransport
 from httpx import AsyncClient
 from src.main import app as fastapi_app
+from pytest_httpx import HTTPXMock
 
 @pytest.fixture(autouse=True, scope="session")
 async def prepare_database():
@@ -56,3 +57,12 @@ async def ac():
 async def session():
     async with async_session_maker() as session:
         yield session
+
+@pytest.fixture
+def mock_auth_service(httpx_mock: HTTPXMock):
+    httpx_mock.add_response(
+        method="POST",  
+        url="http://auth_service:8000/users", 
+        status_code=201, 
+        json={"id": 1, "name": "Jane Smith"}  
+    )
