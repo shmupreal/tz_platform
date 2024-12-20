@@ -1,6 +1,6 @@
 from fastapi import HTTPException
 from ..enums.product_category import ProductCategory
-from sqlalchemy import select
+from sqlalchemy import select, and_
 from typing import Optional, List
 from ..models.product import Product
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -48,3 +48,31 @@ class ProductRepository:
         await self.db.delete(product)
         await self.db.commit()
         return True
+    
+    async def filter_products(
+        self,
+        name: Optional[str] = None,
+        description: Optional[str] = None,
+        min_price: Optional[float] = None,
+        max_price: Optional[float] = None,
+        category: Optional[ProductCategory] = None,
+    ) -> List[Product]:
+        query = select(Product)
+        
+        filters = []
+        if name:
+            filters.append(Product.name.ilike(f"%{name}%"))
+        if description:
+            filters.append(Product.description.ilike(f"%{description}%"))
+        if min_price is not None:
+            filters.append(Product.price >= min_price)
+        if max_price is not None:
+            filters.append(Product.price <= max_price)
+        if category:
+            filters.append(Product.category == category)
+        
+        if filters:
+            query = query.filter(and_(*filters))
+        
+        result = await self.db.execute(query)
+        return result.scalars().all()

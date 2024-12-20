@@ -1,5 +1,6 @@
 from ...enums.product_category import ProductCategory
-from typing import List
+from typing import List, Optional
+from fastapi import Query
 from ...api.deps.product_deps import get_product_service, get_current_user
 from ...api.schemas.product import ProductResponseDTO, ProductUpdateDTO, ProductCreateDTO
 from fastapi import APIRouter, Depends, HTTPException
@@ -67,3 +68,20 @@ async def delete_product(
     if not result:
         raise HTTPException(status_code=404, detail="Product not found")
     return result
+
+@product_router.get("/filter/", response_model=List[ProductResponseDTO])
+async def filter_products(
+    name: Optional[str] = Query(None, description="Filter by product name"),
+    description: Optional[str] = Query(None, description="Filter by product description"),
+    min_price: Optional[float] = Query(None, ge=0, description="Minimum price"),
+    max_price: Optional[float] = Query(None, ge=0, description="Maximum price"),
+    category: Optional[ProductCategory] = Query(None, description="Product category"),
+    product_service: ProductService = Depends(get_product_service),
+) -> List[ProductResponseDTO]:
+    return await product_service.filter_products(
+        name=name,
+        description=description,
+        min_price=min_price,
+        max_price=max_price,
+        category=category,
+    )

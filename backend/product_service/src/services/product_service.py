@@ -42,3 +42,31 @@ class ProductService:
     
     async def delete_product(self, product_id: int) -> bool:
         return await self.product_repo.delete_product(product_id)
+    
+    async def filter_products(
+            self,
+            name: Optional[str] = None,
+            description: Optional[str] = None,
+            min_price: Optional[float] = None,
+            max_price: Optional[float] = None,
+            category: Optional[ProductCategory] = None,
+        ) -> List[ProductResponseDTO]:
+            products = await self.product_repo.filter_products(
+                name=name,
+                description=description,
+                min_price=min_price,
+                max_price=max_price,
+                category=category,
+            )
+            return [
+                ProductResponseDTO(
+                    id=product.id,
+                    name=product.name,
+                    description=product.description,
+                    price=product.price,
+                    stock_quantity=product.stock_quantity,
+                    category=product.category,
+                    user_id=product.user_id,
+                )
+                for product in products
+            ]
