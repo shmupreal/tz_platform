@@ -13,12 +13,8 @@ services:
       depends_on:
         auth_db:
           condition: service_healthy
-      environment:
-        POSTGRES_USER: "postgres"
-        POSTGRES_PASS: "34tgw3eg"
-        POSTGRES_DB: "auth_service_db"
-        POSTGRES_HOST: "auth_db"
-        POSTGRES_PORT: "5432"
+      env_file:
+        - ./backend/auth_service/.env
       networks:
         - app_network
 
@@ -33,12 +29,8 @@ services:
     depends_on:
       registration_db:
         condition: service_healthy
-    environment:
-      POSTGRES_USER: "postgres"
-      POSTGRES_PASS: "34tgw3eg"
-      POSTGRES_DB: "registration_service_db"
-      POSTGRES_HOST: "registration_db"
-      POSTGRES_PORT: "5432"
+    env_file:
+        - ./backend/registration_service/.env
     networks:
       - app_network
 
@@ -55,12 +47,8 @@ services:
         condition: service_healthy
       auth_service:
         condition: service_started
-    environment:
-      POSTGRES_USER: "postgres"
-      POSTGRES_PASS: "34tgw3eg"
-      POSTGRES_DB: "product_service_db"
-      POSTGRES_HOST: "product_db"
-      POSTGRES_PORT: "5432"
+    env_file:
+        - ./backend/product_service/.env
     networks:
       - app_network
 
@@ -72,11 +60,8 @@ services:
       - "5437:5432"
     volumes:
       - registration_db_data:/var/lib/postgresql/data
-    environment:
-      POSTGRES_USER: "postgres"
-      POSTGRES_PASS: "34tgw3eg"
-      POSTGRES_DB: "registration_service_db"
-      POSTGRES_HOST_AUTH_METHOD: "trust"
+    env_file:
+        - ./backend/registration_service/.env
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "postgres", "-d", "registration_service_db", "-h", "localhost"]
       interval: 10s
@@ -91,11 +76,8 @@ services:
       - "5438:5432"
     volumes:
       - auth_db_data:/var/lib/postgresql/data
-    environment:
-      POSTGRES_USER: "postgres"
-      POSTGRES_PASS: "34tgw3eg"
-      POSTGRES_DB: "auth_service_db"
-      POSTGRES_HOST_AUTH_METHOD: "trust"
+    env_file:
+        - ./backend/auth_service/.env
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "postgres", "-d", "auth_service_db", "-h", "localhost"]
       interval: 10s
@@ -125,11 +107,8 @@ services:
       - "5439:5432"
     volumes:
       - product_db_data:/var/lib/postgresql/data
-    environment:
-      POSTGRES_USER: "postgres"
-      POSTGRES_PASS: "34tgw3eg"
-      POSTGRES_DB: "product_service_db"
-      POSTGRES_HOST_AUTH_METHOD: "trust"
+    env_file:
+        - ./backend/product_service/.env
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "postgres", "-d", "product_service_db", "-h", "localhost"]
       interval: 10s
