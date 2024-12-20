@@ -9,7 +9,7 @@ services:
       command: ["bash", "-c", "alembic upgrade head && gunicorn src.main:app --workers 4 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000"]
       container_name: auth_service
       ports:
-        - "8005:8000"
+        - "8006:8000"
       depends_on:
         auth_db:
           condition: service_healthy
@@ -25,7 +25,7 @@ services:
     command: ["bash", "-c", "alembic upgrade head && gunicorn src.main:app --workers 4 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000"]
     container_name: registration_service
     ports:
-      - "8006:8000"
+      - "8005:8000"
     depends_on:
       registration_db:
         condition: service_healthy
