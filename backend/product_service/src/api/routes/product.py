@@ -56,7 +56,7 @@ async def update_product(
     updated_product = await product_service.update_product(product_id, product_data)
     if not updated_product:
         raise HTTPException(status_code=404, detail="Product not found")
-    return update_product
+    return updated_product
 
 @product_router.delete("/{product_id}", response_model=bool)
 async def delete_product(
