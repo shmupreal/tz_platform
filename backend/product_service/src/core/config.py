@@ -5,7 +5,6 @@ from pydantic_settings import BaseSettings
 class Settings(BaseSettings):
 
     AUTH_SERVICE_URL: str
-    NOTIFICATION_SERVICE_URL: str
 
     POSTGRES_USER: str
     POSTGRES_PASS: str
