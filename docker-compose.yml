@@ -6,7 +6,7 @@ services:
       build: 
         context: ./backend/auth_service
         dockerfile: Dockerfile
-      command: ["./scripts/start.sh"]
+      command: ["bash", "-c", "alembic upgrade head && gunicorn src.main:app --workers 4 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000"]
       container_name: auth_service
       ports:
         - "8005:8000"
@@ -26,7 +26,7 @@ services:
     build:
       context: ./backend/registration_service
       dockerfile: Dockerfile
-    command: ["./scripts/start.sh"]
+    command: ["bash", "-c", "alembic upgrade head && gunicorn src.main:app --workers 4 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000"]
     container_name: registration_service
     ports:
       - "8006:8000"
@@ -46,7 +46,7 @@ services:
     build: 
       context: ./backend/product_service
       dockerfile: Dockerfile
-    command: ["./scripts/start.sh"]
+    command: ["bash", "-c", "alembic upgrade head && gunicorn src.main:app --workers 4 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000"]
     container_name: product_service
     ports:
       - "8007:8000"

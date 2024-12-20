@@ -15,7 +15,7 @@ def mock_auth_service(httpx_mock: HTTPXMock):
 @pytest.mark.asyncio
 async def test_register_user(mock_auth_service, ac):
     def open_mock_json(model: str):
-        with open(f"tests/mock_{model}.json", encoding="utf-8") as file:
+        with open(f"src/tests/mock_{model}.json", encoding="utf-8") as file:
             return json.load(file)
 
     users = open_mock_json("users")
