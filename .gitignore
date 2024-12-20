@@ -9,4 +9,5 @@ __pycache__/
 *.iml
 *.log
 assets/*  
-!assets/  
+!assets/ 
+.env 
