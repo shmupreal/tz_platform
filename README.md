@@ -14,6 +14,8 @@ git clone https://github.com/shmupreal/tz_platform.git
 После того как репозиторий клонирован, перейдите в директорию проекта и выполните команду для сборки и запуска сервисов через Docker:
 
 ```bash
+cd tz_platform
+
 docker compose up --build
 ```
 
